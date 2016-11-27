@@ -1,4 +1,4 @@
-// implements an AVL Tree
+// implements an AVL Tree with unique elements
 // by Peter Master, 11/26/16
 
 #ifndef AVL_H_
@@ -12,10 +12,10 @@ class AVLTree
 public:
     AVLTree ();
     virtual ~AVLTree ();
-    void Insert (Element val);
+    void Insert (const Element val);
     // chooses smallest node on the right subtree when deleting a node with two children
-    void Delete (Element val);
-    bool Access (Element val);
+    void Delete (const Element val);
+    bool Access (const Element val);
     std::string PrintPreOrder () const;
     std::string PrintInOrder () const;
 
@@ -30,10 +30,10 @@ private:
     } *root;
 
     void makeEmpty(BinaryNode *t);
-    BinaryNode* getMin(BinaryNode *t);
-	bool Insert(const Element e, BinaryNode * & t);
+    BinaryNode* getMin(BinaryNode *t) const;
+	void Insert(const Element e, BinaryNode * & t);
+	void Delete(const Element e, BinaryNode * & t);
 	bool Access(const Element e, BinaryNode * & t);
-	bool Delete(const Element e, BinaryNode * & t);
 };
 
 #endif /* end of include guard: AVL_H_ */
