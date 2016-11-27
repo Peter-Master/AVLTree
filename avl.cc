@@ -6,3 +6,19 @@
 #include "avl.h"
 
 using namespace std;
+
+AVLTree::AVLTree( ) : root(NULL) { }
+
+AVLTree::~AVLTree( ) { makeEmpty(root); }
+
+void AVLTree::Insert(Element val) {
+    Insert(val, root);
+}
+
+void AVLTree::Delete(Element val) {
+    Delete(val, root);
+}
+
+bool AVLTRee::Access(Element val) {
+    return = Access(val, root);
+}
