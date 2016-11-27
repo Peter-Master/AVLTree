@@ -19,6 +19,14 @@ void AVLTree::Delete(Element val) {
     Delete(val, root);
 }
 
-bool AVLTRee::Access(Element val) {
+bool AVLTRee::Access(Element val) const {
     return = Access(val, root);
+}
+
+std::string AVLTree::PrintPreOrder( ) const {
+    return PrintPreOrder(root);
+}
+
+std::string AVLTree::PrintInOrder( ) const {
+    return PrintInOrder(root);
 }
