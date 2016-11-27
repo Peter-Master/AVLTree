@@ -29,8 +29,8 @@ private:
         BinaryNode(const Element &e, BinaryNode *lt, BinaryNode *rt): elem(e), left(lt), right(rt) {}
     } *root;
 
-    BinaryNode* getMin(BinaryNode *t);
     void makeEmpty(BinaryNode *t);
+    BinaryNode* getMin(BinaryNode *t);
 	bool Insert(const Element e, BinaryNode * & t);
 	bool Access(const Element e, BinaryNode * & t);
 	bool Delete(const Element e, BinaryNode * & t);
