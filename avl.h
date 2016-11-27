@@ -33,7 +33,9 @@ private:
     BinaryNode* getMin(BinaryNode *t) const;
 	void Insert(const Element e, BinaryNode * & t);
 	void Delete(const Element e, BinaryNode * & t);
-	bool Access(const Element e, BinaryNode * & t);
+	bool Access(const Element e, BinaryNode * & t) const;
+	std::string PrintPreOrder(BinaryNode * & t) const;
+	std::string PrintInOrder(BinaryNode * & t) const;
 };
 
 #endif /* end of include guard: AVL_H_ */
