@@ -27,15 +27,11 @@ bool AVLTree::Access(Element val) const {
 // CONSIDER USING A TRAVERSE FUNCTION THAT TAKES IN AN
 // ARGUMENT FOR THE BELOW THREE FUNCTIONS
 std::string AVLTree::PrintPreOrder( ) const {
-    cout << "start of nonrecursive printpreorder" << endl;
     if (root) {
-        cout << "1" << endl;
         std::string result = PrintPreOrder(root);
-        cout << "result with extra space: " << result << endl;
         result.pop_back( );
         return result;
     }
-    cout << " SSHOULD ____NOT_____ GET HERE!!!" << endl;
         //return root->elem + PrintPreOrder(root->left) +
         //        PrintPreOrder(root->right);
     return "";
@@ -53,7 +49,13 @@ std::string AVLTree::PrintInOrder( ) const {
 }
 
 void AVLTree::makeEmpty(BinaryNode *t) {
-    // STUB
+    // uses postorder traversal to delete all nodes
+    if (!t)
+        return;
+    makeEmpty(t->left);
+    makeEmpty(t->right);
+    delete t;
+    return;
 }
 // SEE COMMENT BEFORE PrintPreOrder FUNCTION IMPLEMENTATION
 
@@ -76,12 +78,6 @@ int AVLTree::getBalance(const BinaryNode *t) const {
     //if (t->right)
     //    return -(t->right->height);
     //return 0;
-    cout << "HEIGHTS: ";
-    cout << getHeight(t);
-    cout << " ";
-    cout << getHeight(t->left);
-    cout << " ";
-    cout << getHeight(t->right) << endl;
     return getHeight(t->left) - getHeight(t->right);
 }
 
@@ -110,11 +106,8 @@ BinaryNode* AVLTree::rotateLeft(BinaryNode *x) {
     x->right = t2;
 
     // update heights
-    cout << "left rotate1" << endl;
     x->height = 1 + max(getHeight(x->left), getHeight(x->right));
-    cout << "left rotate2" << endl;
     y->height = 1 + max(getHeight(y->left), getHeight(y->right));
-    cout << "left rotate3" << endl;
 
     return y;
 }
@@ -128,59 +121,40 @@ BinaryNode* AVLTree::rotateRight(BinaryNode *y) {
     y->left = t2;
 
     // update heights
-    cout << "right rotate1" << endl;
     y->height = 1 + max(getHeight(y->left), getHeight(y->right));
-    cout << "right rotate2" << endl;
     x->height = 1 + max(getHeight(x->left), getHeight(x->right));
-    cout << "right rotate3" << endl;
 
-    cout << "the root is now " << root->elem << endl;
     return x;
 }
 
 BinaryNode* AVLTree::Insert(const Element e, BinaryNode *t) {
-    cout << "Beginning of Recursive Insert" << endl;
     // inserts element as leaf
     if (t == NULL) {
         t = new BinaryNode(e);
         return t;
     }
     else if (e > t->elem) {
-        cout << "element goes to right" << endl;
         t->right = Insert(e, t->right);
-        cout << "element went to the right, t is " << t->elem << " and t->right now equals " << t->right->elem << endl;
     }
     else if (e < t->elem) {
-        cout << "element goes to left" << endl;
-        t->left = Insert(e, t->left);
-        cout << "element went to the left, t is " << t->elem << " and t->left now equals " << t->left->elem << endl;
+            t->left = Insert(e, t->left);
     }
     else  //  e == t->elem
         return t;
-    cout << "222" << endl;
     // update height
     t->height = 1 + max(getHeight(t->left), getHeight(t->right));
-    cout << "T->HEIGHT " << t->height << endl;
-    cout << "333" << endl;
     // perform appropriate rotations
     int balance = getBalance(t);
-    cout << "444" << endl;
     if (balance > 1) {
-        cout << "555" << endl;
-        cout << "t->elem " << t->elem << " t->left->elem " << t->left->elem << endl;
         if (e < t->left->elem) { // outside rotation (LL)
-            cout << "555.110 rotating right with t: " << t->elem << endl;
             return rotateRight(t);
         }
         else { // inside rotation (LR)
-            cout << "555.112" << endl;
             t->left = rotateLeft(t->left);
-            cout << "555.113" << endl;
             return rotateRight(t);
         }
     }
     else if (balance < -1) {
-        cout << "666" << endl;
         if (e > t->right->elem) // outside rotation (RR)
             return rotateLeft(t);
         else { // inside rotation (RL)
@@ -188,8 +162,6 @@ BinaryNode* AVLTree::Insert(const Element e, BinaryNode *t) {
             return rotateLeft(t);
         }
     }
-    cout << "777" << endl;
-    cout << root->elem << endl;
     return t;
 }
 
@@ -261,13 +233,10 @@ bool AVLTree::Access(const Element e, const BinaryNode *t) const {
 }
 
 std::string AVLTree::PrintPreOrder(const BinaryNode *t) const {
-    cout << "Start of Recursive PrintPreOrder" << endl;
     if (t) {
         //return std::to_string(t->elem) + " " + PrintPreOrder(t->left) + PrintPreOrder(t->right);
-        cout << "hello again" << endl;
         std::ostringstream tToString;
         tToString << t->elem;
-        cout << tToString.str( ) << ": left-" << (t->left ? t->left->elem : 0) << " right-" << (t->right ? t->right->elem : 0) << endl;
         return tToString.str( ) + " " + PrintPreOrder(t->left) + PrintPreOrder(t->right);
     }
     return "";
@@ -277,12 +246,10 @@ std::string AVLTree::PrintPreOrder(const BinaryNode *t) const {
 
 
 std::string AVLTree::PrintInOrder(const BinaryNode *t) const{
-    cout << "Start of Recursive PrintInOrder" << endl;
     if (t) {
          //return PrintInOrder(t->left) + std::to_string(t->elem) + " " + PrintInOrder(t->right);
         std::ostringstream tToString;
         tToString << t->elem;
-        cout << tToString.str( ) << ": left-" << (t->left ? t->left->elem : 0) << " right-" << (t->right ? t->right->elem : 0) << endl;
         return PrintInOrder(t->left) + tToString.str( ) + " " + PrintInOrder(t->right);
     }
     return "";
