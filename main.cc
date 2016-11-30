@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "gtest/gtest.h"
 
@@ -34,8 +35,6 @@ TEST (AVLTree, Test1) {
   EXPECT_STREQ (avltree.PrintPreOrder().c_str(), "15 10 2 12 18 20");
   EXPECT_STREQ (avltree.PrintInOrder().c_str(), "2 10 12 15 18 20");
 
-  cout << "###########\n###################\n################\nEND OF INSERTS\n###################\n#################\n###########" << endl;
-
   avltree.Delete(10);
   EXPECT_STREQ (avltree.PrintPreOrder().c_str(), "15 12 2 18 20");
   EXPECT_STREQ (avltree.PrintInOrder().c_str(), "2 12 15 18 20");
@@ -51,6 +50,30 @@ TEST (AVLTree, Test1) {
   avltree.Insert(7);
   EXPECT_STREQ (avltree.PrintPreOrder().c_str(), "12 2 7 15");
   EXPECT_STREQ (avltree.PrintInOrder().c_str(), "2 7 12 15");
+
+  ifstream ifile;
+  ofstream ofile;
+  int N = 10000;
+  ofile.open("s10000inorder.txt");
+  AVLTree avltree2;
+  ifile.open("s10000.txt");
+  int next;
+  for (int i = 0; i < N; i++) {
+    ifile >> next;
+    avltree2.Insert(next);
+  }
+  ifile.close();
+  ifile.open("s10000.txt");
+  for (int i = 0; i < N; i++) {
+    ifile >> next;
+    if (i % 3 == 0)
+      avltree2.Delete(next);
+  }
+  ofile << avltree2.PrintInOrder();
+  ofile.close();
+  ofile.open("s10000preorder.txt");
+  ofile << avltree2.PrintPreOrder();
+  ofile.close();
 }
 
 int main(int argc, char *argv[])
