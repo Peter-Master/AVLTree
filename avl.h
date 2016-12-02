@@ -32,6 +32,8 @@ public:
     std::string PrintPreOrder () const;
     std::string PrintInOrder () const;
 
+    //int COUNTER[23]; for testing exhaustiveness of all cases
+
 private:
     //struct BinaryNode {
     //    Element elem;
