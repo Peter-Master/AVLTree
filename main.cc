@@ -94,8 +94,8 @@ TEST (AVLTree, Test1) {
   ofile.close();
 
   //cout << "anything false in final test?" << endl  << "if no following blanks then everything is true\n{" << endl;
-  for (int i = 0; i < 23; i++)
-    if (!avltree2.COUNTER[i]) cout << i << " is false" << endl;
+  //for (int i = 0; i < 23; i++)
+  //  if (!avltree2.COUNTER[i]) cout << i << " is false" << endl;
   //cout << "  }\n";
 }
 
