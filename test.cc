@@ -5,7 +5,363 @@
 
 #include "avl.h"
 
+#include <chrono>
+#include <algorithm>
+
 using namespace std;
+using namespace std::chrono;
+
+class BinarySearchTree
+{
+public:
+  BinarySearchTree(): root() {}
+  ~BinarySearchTree() { makeEmpty(root);}
+
+  bool Insert(const Element e);
+  bool Access(const Element e);
+  bool Delete(const Element e);
+
+private:
+
+  BinaryNode *root;
+
+  BinaryNode * findMin(BinaryNode *t);
+  void makeEmpty(BinaryNode * & t);
+  bool Insert(const Element e, BinaryNode * & t);
+  bool Access(const Element e, BinaryNode * & t);
+  bool Delete(const Element e, BinaryNode * & t);
+};
+
+
+void runTimeTests() {
+  BinarySearchTree bst;
+  AVLTree avltree;
+  int bstTimes[3][3];
+  int avltreeTimes[3][3];
+  for (int i = 0; i < 3; i++)
+    for (int j = 0; j < 3; j++) {
+      bstTimes[i][j] = 0;
+      avltreeTimes[i][j] = 0;
+    }
+  high_resolution_clock::time_point t1;
+  high_resolution_clock::time_point t2;
+
+  int rSmallArray1[50000];
+  int rSmallArray2[50000];
+  int rSmallArray3[50000];
+  for (int i = 0; i < 50000; i++) {
+    rSmallArray1[i] = i;
+    rSmallArray2[i] = i;
+    rSmallArray3[i] = i;
+  }
+  int rMedArray1[50000];
+  int rMedArray2[50000];
+  int rMedArray3[50000];
+  for (int i = 0; i < 50000; i++) {
+    rMedArray1[i] = i;
+    rMedArray2[i] = i;
+    rMedArray3[i] = i;
+  }
+  int rBigArray1[50000];
+  int rBigArray2[50000];
+  int rBigArray3[50000];
+  for (int i = 0; i < 50000; i++) {
+    rBigArray1[i] = i;
+    rBigArray2[i] = i;
+    rBigArray3[i] = i;
+  }
+  random_shuffle((rSmallArray1), end(rSmallArray1));
+  random_shuffle((rSmallArray2), end(rSmallArray2));
+  random_shuffle((rSmallArray3), end(rSmallArray3));
+  random_shuffle((rMedArray1), end(rMedArray1));
+  random_shuffle((rMedArray2), end(rMedArray2));
+  random_shuffle((rMedArray3), end(rMedArray3));
+  random_shuffle((rBigArray1), end(rBigArray1));
+  random_shuffle((rBigArray2), end(rBigArray2));
+  random_shuffle((rBigArray3), end(rBigArray3));
+  for (int i =0; i < 100; i++)
+    cout << rBigArray2[i] << " ";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  t1 = high_resolution_clock::now();
+  for (int j = 100; j > 0; j--) {
+  for (int i = 0; i < 1000; i++)
+    bst.Insert(i);
+  for (int i = 0; i < 1000; i++)
+    bst.Access(i);
+  for (int i = 0; i < 1000; i++)
+    bst.Delete(i);
+}
+  t2 = high_resolution_clock::now();
+  bstTimes[0][0] = duration_cast<microseconds>(t2-t1).count()/100;
+
+
+  t1 = high_resolution_clock::now();
+  for (int j = 100; j > 0; j--) {
+  for (int i = 0; i < 1000; i++)
+    avltree.Insert(i);
+  for (int i = 0; i < 1000; i++)
+    avltree.Access(i);
+  for (int i = 0; i < 1000; i++)
+    avltree.Delete(i);
+}
+  t2 = high_resolution_clock::now();
+  avltreeTimes[0][0] = duration_cast<microseconds>(t2-t1).count()/100;
+
+
+    t1 = high_resolution_clock::now();
+  for (int i = 0; i < 10000; i++)
+    bst.Insert(i);
+  for (int i = 0; i < 10000; i++)
+    bst.Access(i);
+  for (int i = 0; i < 10000; i++)
+    bst.Delete(i);
+
+  t2 = high_resolution_clock::now();
+  bstTimes[0][1] = duration_cast<microseconds>(t2-t1).count();
+
+
+  t1 = high_resolution_clock::now();
+  for (int i = 0; i < 10000; i++)
+    avltree.Insert(i);
+  for (int i = 0; i < 10000; i++)
+    avltree.Access(i);
+  for (int i = 0; i < 10000; i++)
+    avltree.Delete(i);
+  t2 = high_resolution_clock::now();
+  avltreeTimes[0][1] = duration_cast<microseconds>(t2-t1).count();
+
+
+  t1 = high_resolution_clock::now();
+  for (int i = 0; i < 50000; i++)
+    bst.Insert(i);
+  for (int i = 0; i < 50000; i++)
+    bst.Access(i);
+  for (int i = 0; i < 50000; i++)
+    bst.Delete(i);
+  
+  t2 = high_resolution_clock::now();
+  bstTimes[0][2] = duration_cast<microseconds>(t2-t1).count();
+
+
+  t1 = high_resolution_clock::now();
+  for (int i = 0; i < 50000; i++)
+    avltree.Insert(i);
+  for (int i = 0; i < 50000; i++)
+    avltree.Access(i);
+  for (int i = 0; i < 50000; i++)
+    avltree.Delete(i);
+  t2 = high_resolution_clock::now();
+  avltreeTimes[0][2] = duration_cast<microseconds>(t2-t1).count();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  t1 = high_resolution_clock::now();
+  for (int j = 100; j > 0; j--) {
+  for (int i = 0; i < 1000; i++)
+    bst.Insert(i);
+  for (int i = 999; i >= 0; i--)
+    bst.Access(i);
+  for (int i = 999; i >= 0; i--)
+    bst.Delete(i);
+}
+  t2 = high_resolution_clock::now();
+  bstTimes[1][0] = duration_cast<microseconds>(t2-t1).count()/100;
+
+
+  t1 = high_resolution_clock::now();
+  for (int j = 100; j > 0; j--) {
+  for (int i = 0; i < 1000; i++)
+    avltree.Insert(i);
+  for (int i = 999; i >= 0; i--)
+    avltree.Access(i);
+  for (int i = 999; i >= 0; i--)
+    avltree.Delete(i);
+}
+  t2 = high_resolution_clock::now();
+  avltreeTimes[1][0] = duration_cast<microseconds>(t2-t1).count()/100;
+
+
+    t1 = high_resolution_clock::now();
+  for (int i = 0; i < 10000; i++)
+    bst.Insert(i);
+  for (int i = 9999; i >= 0; i--)
+    bst.Access(i);
+  for (int i = 9999; i >= 0; i--)
+    bst.Delete(i);
+
+  t2 = high_resolution_clock::now();
+  bstTimes[1][1] = duration_cast<microseconds>(t2-t1).count();
+
+
+  t1 = high_resolution_clock::now();
+  for (int i = 0; i < 10000; i++)
+    avltree.Insert(i);
+  for (int i = 9999; i >= 0; i--)
+    avltree.Access(i);
+  for (int i = 9999; i >= 0; i--)
+    avltree.Delete(i);
+  t2 = high_resolution_clock::now();
+  avltreeTimes[1][1] = duration_cast<microseconds>(t2-t1).count();
+
+
+  t1 = high_resolution_clock::now();
+  for (int i = 0; i < 50000; i++)
+    bst.Insert(i);
+  for (int i = 49999; i >= 0; i--)
+    bst.Access(i);
+  for (int i = 49999; i >= 0; i--)
+    bst.Delete(i);
+  
+  t2 = high_resolution_clock::now();
+  bstTimes[1][2] = duration_cast<microseconds>(t2-t1).count();
+
+
+  t1 = high_resolution_clock::now();
+  for (int i = 0; i < 50000; i++)
+    avltree.Insert(i);
+  for (int i = 49999; i >= 0; i--)
+    avltree.Access(i);
+  for (int i = 49999; i >= 0; i--)
+    avltree.Delete(i);
+  t2 = high_resolution_clock::now();
+  avltreeTimes[1][2] = duration_cast<microseconds>(t2-t1).count();
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  t1 = high_resolution_clock::now();
+  for (int j = 100; j > 0; j--) {
+  for (int i = 0; i < 1000; i++)
+    bst.Insert(rSmallArray1[i]);
+  for (int i = 0; i < 1000; i++)
+    bst.Access(rSmallArray2[i]);
+  for (int i = 0; i < 1000; i++)
+    bst.Delete(rSmallArray3[i]);
+}
+  t2 = high_resolution_clock::now();
+  bstTimes[2][0] = duration_cast<microseconds>(t2-t1).count()/100;
+
+
+  t1 = high_resolution_clock::now();
+  for (int j = 100; j > 0; j--) {
+  for (int i = 0; i < 1000; i++)
+    avltree.Insert(rSmallArray1[i]);
+  for (int i = 0; i < 1000; i++)
+    avltree.Access(rSmallArray2[i]);
+  for (int i = 0; i < 1000; i++)
+    avltree.Delete(rSmallArray3[i]);
+}
+  t2 = high_resolution_clock::now();
+  avltreeTimes[2][0] = duration_cast<microseconds>(t2-t1).count()/100;
+
+
+    t1 = high_resolution_clock::now();
+  for (int i = 0; i < 10000; i++)
+    bst.Insert(rMedArray1[i]);
+  for (int i = 0; i < 10000; i++)
+    bst.Access(rMedArray2[i]);
+  for (int i = 0; i < 10000; i++)
+    bst.Delete(rMedArray3[i]);
+
+  t2 = high_resolution_clock::now();
+  bstTimes[2][1] = duration_cast<microseconds>(t2-t1).count();
+
+
+  t1 = high_resolution_clock::now();
+  for (int i = 0; i < 10000; i++)
+    avltree.Insert(rMedArray1[i]);
+  for (int i = 0; i < 10000; i++)
+    avltree.Access(rMedArray2[i]);
+  for (int i = 0; i < 10000; i++)
+    avltree.Delete(rMedArray3[i]);
+  t2 = high_resolution_clock::now();
+  avltreeTimes[2][1] = duration_cast<microseconds>(t2-t1).count();
+
+
+  t1 = high_resolution_clock::now();
+  for (int i = 0; i < 50000; i++)
+    bst.Insert(rBigArray1[i]);
+  for (int i = 0; i < 50000; i++)
+    bst.Access(rBigArray2[i]);
+  for (int i = 0; i < 50000; i++)
+    bst.Delete(rBigArray3[i]);
+  
+  t2 = high_resolution_clock::now();
+  bstTimes[2][2] = duration_cast<microseconds>(t2-t1).count();
+
+
+  t1 = high_resolution_clock::now();
+  for (int i = 0; i < 50000; i++)
+    avltree.Insert(rBigArray1[i]);
+  for (int i = 0; i < 50000; i++)
+    avltree.Access(rBigArray2[i]);
+  for (int i = 0; i < 50000; i++)
+    avltree.Delete(rBigArray3[i]);
+  t2 = high_resolution_clock::now();
+  avltreeTimes[2][2] = duration_cast<microseconds>(t2-t1).count();
+
+
+
+
+
+
+
+
+
+  cout << endl << endl << "############TIMES############" << endl;
+  for (int i = 0; i < 3; i++)
+    for (int j = 0; j < 3; j++)
+      cout << "test " << i << "-" << j << ": BST-" << bstTimes[i][j] << " and AVLTree-" << avltreeTimes[i][j] << endl;
+}
+
 
 TEST (AVLTree, Test1) {
   AVLTree avltree;
@@ -205,5 +561,113 @@ TEST (AVLTree, Test1) {
 int main(int argc, char *argv[])
 {
   ::testing::InitGoogleTest (&argc, argv);
-  return RUN_ALL_TESTS ();
+  int useless_var = RUN_ALL_TESTS ();
+
+  runTimeTests();
+  return 0;
 }
+
+
+
+
+
+////////////////////////
+// BST IMPLEMENTATION //
+////////////////////////
+
+
+// Public Methods
+
+bool BinarySearchTree::Insert(const Element e)
+{
+  return Insert(e, root);
+}
+
+bool BinarySearchTree::Access(const Element e)
+{
+  return Access(e, root);
+}
+
+bool BinarySearchTree::Delete(const Element e)
+{
+  return Delete(e, root);
+}
+
+// Privte Methods
+
+BinaryNode * BinarySearchTree::findMin(BinaryNode *t)
+{
+  if(t != NULL)
+    while(t->left != NULL)
+      t = t->left;
+  return t;
+}
+
+void BinarySearchTree::makeEmpty(BinaryNode * & t)
+{
+  if(t != NULL) {
+    makeEmpty(t->left);
+    makeEmpty(t->right);
+    delete t;
+  }
+  t = NULL;
+}
+
+bool BinarySearchTree::Insert(const Element e, BinaryNode * & t)
+{
+  if(t == NULL) {
+    t = new BinaryNode(e);
+    return true;
+  } else if(e == t->elem)
+    return false;
+  else if(e < t->elem)
+    return Insert(e, t->left);
+  else if(e > t->elem)
+    return Insert(e, t->right);
+  else
+    return false;
+}
+
+bool BinarySearchTree::Access(const Element e, BinaryNode * & t)
+{
+  if(t == NULL)
+    return false;
+  else if(e == t->elem)
+    return true;
+  else if(e < t->elem)
+    return Access(e, t->left);
+  else
+    return Access(e, t->right);
+}
+
+bool BinarySearchTree::Delete(const Element e, BinaryNode * & t)
+{
+  if(t == NULL) {
+//    cout << "case 1: t->elem= " << t->elem << endl;
+    return false;
+  }
+  else if(e < t->elem) {
+//    cout << "case 2: t->elem= " << t->elem << endl;
+    return Delete(e, t->left);
+  }
+  else if(e > t->elem) {
+//    cout << "case 3: t->elem= " << t->elem << endl;
+    return Delete(e, t->right);
+  }
+  else {
+    if(t->left != NULL && t->right != NULL) {
+//      cout << "case 4_1: t->elem= " << t->elem << endl;
+      t->elem = findMin(t->right)->elem;
+//      cout << "case 4_1: t->elem= " << t->elem << endl;
+      return Delete(t->elem, t->right);
+    }
+    else {
+//      cout << "case 4_2: t->elem= " << t->elem << endl;
+      BinaryNode *oldNode = t;
+      t = (t->left != NULL) ? t->left : t->right;
+      delete oldNode;
+      return true;
+    }
+  }
+}
+
